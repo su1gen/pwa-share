@@ -1,20 +1,18 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next'
+import withPWA from 'next-pwa'
+
+const nextConfig: NextConfig = {
+  output: 'export',  // Включаем статический экспорт
   reactStrictMode: true,
-  async headers() {
-    return [
-      {
-        source: '/manifest.json',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'application/manifest+json',
-          },
-        ],
-      },
-    ]
-  },
+  images: {
+    unoptimized: true // Необходимо для статического экспорта
+  }
 }
 
-module.exports = nextConfig
+const withPWAConfig = withPWA({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+})
 
+export default withPWAConfig(nextConfig)
